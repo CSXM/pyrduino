@@ -30,7 +30,7 @@ https://virtualenvwrapper.readthedocs.io/en/latest/
 Now onto the business...
 
 There is a example package bundled with the pyrduino wrapper and the installation script at least tries to install it
-(Jump to [It's not working]('#not_working') section if you head into problems):
+(Jump to It's not working section if you head into problems):
 
 `pip install -e .`
 
@@ -86,7 +86,7 @@ more Pythonic and object oriented way. Basically it is just a higher level abstr
 the board, but I think that this simplifies things quite a lot and makes it more confortable to do the actual
 programming.
 
-<a id="not_working"></a>It's not working?!!
+It's not working?!!
 -------------------
 
 I know, my setup.py is somehow not right now and you need to use `pip install -r requirements.txt` to get the packages 
