@@ -68,7 +68,7 @@ for x in range(100):
         led_on = 1
         
     # The wrapper instance will actually remember that we used the name 'light', so it could be 
-    # omitted on later iterations, but let's go this way. First call or read/write should always include the name
+    # omitted on later iterations, but let's go this way. First call of read/write should always include the name
     board.write_pin(name='light', value=led_on)
     board.pass_time(0.05)  # Sleep for a bit
     
