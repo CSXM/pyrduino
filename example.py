@@ -11,8 +11,10 @@ from pyrduino.pyrduino import *
 # Import morse code for our example code
 from morse_code import morseAlphabet
 
-
 class OurProgram:
+    BLINK_TYPE_SEQUENTICAL = 'sequentical'
+    BLINK_TYPE_CONCURRENT = 'concurrent'
+
     def __init__(self, board_id, board_type):
         """ Constructor of the program
 
@@ -130,6 +132,44 @@ class OurProgram:
         self.board.pass_time(1)
         self.board.write_pin(value=0)
 
+    def beep_with_button(self, sound_level=0.9):
+        self.board.register_pin(name='button', number=12, pin_type=PIN_TYPE_DIGITAL, pin_mode=PIN_MODE_INPUT)
+        self.board.register_pin(name='beep', number=9, pin_type=PIN_TYPE_DIGITAL, pin_mode=PIN_MODE_PWM)
+        sounding = False
+        # Shut down the piezo at the start
+        self.board.write_pin(name='beep', value=0)
+        while True:
+            # Get the button pressed status
+            button_pressed = self.board.read_pin(name='button')
+            if not sounding and button_pressed:
+                self.board.write_pin(name='beep', value=sound_level)
+                sounding = True
+            elif sounding and not button_pressed:
+                self.board.write_pin(name='beep', value=0)
+                sounding = False
+
+            self.board.pass_time(0.05)
+
+    def blink_with_input(self, min_pin=11, max_pin=13, blink_type=BLINK_TYPE_SEQUENTICAL, interval=0.2, amount=10):
+        self.board.register_pin_array(min_pin=min_pin, max_pin=max_pin)
+        for occurrence in range(amount):
+            if blink_type == self.BLINK_TYPE_SEQUENTICAL:
+                for pin_no in range(min_pin, max_pin + 1):
+                    self.board.write_pin(name=str(pin_no), value=1)
+                    self.board.pass_time(interval)
+                for pin_no in range(min_pin, max_pin + 1):
+                    self.board.write_pin(name=str(pin_no), value=0)
+                    self.board.pass_time(interval)
+            else:
+                for pin_no in range(min_pin, max_pin +1):
+                    self.board.write_pin(name=str(pin_no), value=1)
+                self.board.pass_time(interval)
+                for pin_no in range(min_pin, max_pin + 1):
+                    self.board.write_pin(name=str(pin_no), value=0)
+                self.board.pass_time(interval)
+
+
+
     def __del__(self):
         """ Destructor which will also call the exit_board method of the board
 
@@ -163,6 +203,20 @@ def piezo_test(our_example):
     :return: Nothing
     """
     our_example.test_piezo()
+
+
+@cli.command()
+@click.pass_obj
+def beep_with_button(our_example):
+    """ Beeps the piezo in pin 9 when button is pressed in pin 12
+
+    This will exit with Ctrl+D
+
+    \f
+    :param our_example: Passed instance of OurProgram
+    :return: Nothing
+    """
+    our_example.beep_with_button()
 
 
 @cli.command()
@@ -225,3 +279,31 @@ def blink_x(our_example, amount):
     :return: Nothing
     """
     our_example.blink_light(amount=amount)
+
+
+@cli.command()
+@click.pass_obj
+@click.option('--min-pin', help='Minimum pin', default=11, type=int)
+@click.option('--max-pin', help='Maximum pin', default=13, type=int)
+@click.argument('blink_type', default=OurProgram.BLINK_TYPE_SEQUENTICAL, required=False)
+@click.argument('interval', default=0.2, type=float, required=False)
+@click.argument('amount', default=10, type=int, required=False)
+def blink_with_input(our_example, min_pin, max_pin, blink_type, interval, amount):
+    """ Blink leds with some input examples
+
+    \f
+    :param our_example: Passed instance of OurProgram
+    :param min_pin: Pin number of the lowest pin
+    :type min_pin: int
+    :param max_pin: Pin number of the highest pin
+    :type max_pin: int
+    :param blink_type: Blink type. Either 'concurrent' or 'sequentical'
+    :type blink_type: str
+    :param interval: The time of seconds to sleep between the events
+    :type interval: float
+    :param amount: Amount of 'rounds' to go
+    :type amount: int
+    :return: Nothing
+    """
+    our_example.blink_with_input(min_pin=min_pin, max_pin=max_pin, blink_type=blink_type,
+                                 interval=interval, amount=amount)

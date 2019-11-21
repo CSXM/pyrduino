@@ -29,15 +29,15 @@ https://virtualenvwrapper.readthedocs.io/en/latest/
 
 Now onto the business...
 
-There is a example package bundled with the pyrduino wrapper and the installation script at least tries to install it
+There is an example package bundled with the pyrduino wrapper and the installation script at least tries to install it
 (Jump to It's not working section if you head into problems):
 
 `pip install -e .`
 
 This will install a `pyrduino_example` command line script for you. Just run it to see the commands it provides.
-It also is depended on click package (https://click.palletsprojects.com/en/7.x/),
+It also is dependent on click package (https://click.palletsprojects.com/en/7.x/),
 which is **NOT** included in the setup requirements because the actual
-pyrduino doesn't need it, so you need to install it ourself if needed: `pip install click`.
+pyrduino module doesn't need it, so you need to install it yourself if needed: `pip install click`.
 
 The basic usage of the wrapper should be quite clear just by looking at the examples. But let's see what we get...
 
@@ -79,9 +79,9 @@ board.exit_board()  # Not actually needed, since this is called in the destructo
 Why?
 ----
 
-I tend to think that this is somewhat more Pythonic way of dealing with this stuff. You just register the pins by name and work
-with them by their names and you only have to worry about that configuration in the initialization phase and then
-just forget about the config part and start programming with the logical stuff in more human readable way and
+I tend to think that this is somewhat more Pythonic way of dealing with this stuff. You just register the pins by name
+and work with them by their names and you only have to worry about that configuration in the initialization phase and
+then just forget about the config part and start programming with the logical stuff in more human readable way and
 more Pythonic and object oriented way. Basically it is just a higher level abstraction of the things to do with
 the board, but I think that this simplifies things quite a lot and makes it more confortable to do the actual
 programming.
@@ -89,9 +89,9 @@ programming.
 It's not working?!!
 -------------------
 
-I know, my setup.py is somehow not right now and you need to use `pip install -r requirements.txt` to get the packages 
-right. Mabe someone could help me? If so, please, contact me. It's my very first time to deal with setuptools since
-I have never had the need for packaging anything and have always used pip and requirements.txt. But that click
+I know, my setup.py is somehow not right at the moment and you need to use `pip install -r requirements.txt` to get the
+packages right. Mabe someone could help me? If so, please, contact me. It's my very first time to deal with setuptools
+since I have never had the need for packaging anything and have always used pip and requirements.txt. But that click
 package is not in requirements.txt, since it's not needed by the wrapper, but only for the examples. It's a great package
 though! I'll link it again :) (https://click.palletsprojects.com/en/7.x/)
 

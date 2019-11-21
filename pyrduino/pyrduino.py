@@ -117,7 +117,8 @@ class Pyrduino:
         self.registered_pins[name] = pin
         self.last_pin_name = name
 
-    def register_pin_array(self, min_pin=1, max_pin=7, pin_type=PIN_TYPE_DIGITAL, pin_mode=PIN_MODE_INPUT):
+
+    def register_pin_array(self, min_pin=11, max_pin=13, pin_type=PIN_TYPE_DIGITAL, pin_mode=PIN_MODE_OUTPUT):
         """ A helper to register multiple pins at once. Refer to @register_pin method.
 
         :param min_pin: Pin to start with
@@ -171,7 +172,7 @@ class Pyrduino:
         :return: Pin value
         """
         read_value = self.get_registered_pin(name).pin.read()
-        logger.debug('Read a value from a pin: ' + read_value)
+        logger.debug('Read a value from a pin: ' + str(read_value))
         return read_value
 
     def pass_time(self, value):
